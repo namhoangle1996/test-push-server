@@ -3,6 +3,7 @@ package com.example.registerdevice;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,10 +25,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewStatus;
 
     static Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3000")
+            .baseUrl("http://10.0.2.2:3001/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
-    ServiceNetwork serviceNetwork = retrofit.create(ServiceNetwork.class);
+    static ServiceNetwork serviceNetwork = retrofit.create(ServiceNetwork.class);
 
 
     @Override
@@ -45,20 +46,23 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     userReqString.put("email",email);
+                    Log.println(Log.INFO,"email isssss",email);
                 }catch (JSONException e) {
                     e.printStackTrace();
                 }
-                final RequestBody body = RequestBody.create(MediaType.parse("application/json"), email) ;
+                final RequestBody body = RequestBody.create(MediaType.parse("application/json"), userReqString.toString()) ;
                 serviceNetwork.registerUser(body).enqueue(new Callback<Response>() {
                     @Override
                     public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
 //                        Log.println()
                          textViewStatus.setText(response.body().getStatus());
+                        Log.d("success", "onResponse: ");
                     }
 
                     @Override
                     public void onFailure(Call<Response> call, Throwable t) {
-
+                        Log.e("error", "exception: " + t.getMessage());
+                        Log.e("error", "exception: " + t.toString());
                     }
                 });
             }

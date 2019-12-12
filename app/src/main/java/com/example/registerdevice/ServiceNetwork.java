@@ -6,15 +6,12 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 
-public class ServiceNetwork {
-    @POST("users/register")
-    Call<Response> registerUser(@Body RequestBody requestUser) {
-        return null;
-    }
+public interface ServiceNetwork {
+    @POST("user/register")
+    Call<Response> registerUser(@Body RequestBody requestUser);
+
 
     @POST("device/register")
-    Call<Response> registerDevice(@Body RequestBody requestUser) {
-        return null;
-    }
+    Call<Response> registerDevice(@Body RequestBody requestUser) ;
 
 }
