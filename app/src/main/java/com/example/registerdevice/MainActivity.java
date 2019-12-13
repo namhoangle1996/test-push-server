@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewStatus;
 
     static Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3001/")
+            .baseUrl("http://192.168.2.153:4001/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     static ServiceNetwork serviceNetwork = retrofit.create(ServiceNetwork.class);
