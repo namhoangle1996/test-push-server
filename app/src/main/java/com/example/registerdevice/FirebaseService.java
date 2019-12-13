@@ -11,24 +11,30 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Map;
+
 public class FirebaseService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseService";
-    private String project_id = "notify-db49c" ;
+    private String project_id = "testnoti-dae17" ;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        // handle a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-
-            sendNotification(remoteMessage.getNotification().getBody());
-        }
+        Map<String, String> content = remoteMessage.getData();
+        sendNotification(content.get("body"));
+//        if (remoteMessage.getNotification() != null) {
+//            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+//
+//            sendNotification(remoteMessage.getNotification().getBody());
+//        }
+        Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "ddd" + remoteMessage.getNotification().getClickAction(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -43,7 +49,7 @@ public class FirebaseService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, Main2Activity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
