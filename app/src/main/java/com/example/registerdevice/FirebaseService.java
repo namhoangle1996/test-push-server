@@ -26,15 +26,14 @@ public class FirebaseService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Map<String, String> content = remoteMessage.getData();
-        sendNotification(content.get("body"));
-//        if (remoteMessage.getNotification() != null) {
-//            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-//
-//            sendNotification(remoteMessage.getNotification().getBody());
-//        }
-        Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "ddd" + remoteMessage.getNotification().getClickAction(), Toast.LENGTH_SHORT).show();
+//        Map<String, String> content = remoteMessage.getData();
+//        sendNotification(content.get("body"));
+        if (remoteMessage.getNotification() != null) {
+            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+
+            sendNotification(remoteMessage.getNotification().getBody(),remoteMessage.getNotification().getTitle());
+        }
+
     }
 
     @Override
@@ -48,19 +47,19 @@ public class FirebaseService extends FirebaseMessagingService {
         // TODO: Implement this method to send token to your app server.
     }
 
-    private void sendNotification(String messageBody) {
+    private void sendNotification(String messageBody, String messageTitle) {
         Intent intent = new Intent(this, Main2Activity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         String channelId = project_id;
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.ic_launcher_background)
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background))
-                        .setContentTitle(project_id)
+                        .setContentTitle(messageTitle)
                         .setContentText(messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
